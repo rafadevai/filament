@@ -75,10 +75,11 @@ private:
 
 struct VulkanTextureState : public fvkmemory::Resource {
     VulkanTextureState(VulkanStagePool& stagePool, VulkanCommands* commands, VmaAllocator allocator,
-            VkDevice device, VkImage image, VkDeviceMemory deviceMemory,
-            VkDeviceMemory stagingMemory, VkBuffer stagingBuffer, Platform::ExternalImageHandle ahBuffer,
-            VkFormat format, VkImageViewType viewType, uint8_t levels, uint8_t layerCount,
-            VkSamplerYcbcrConversion ycbcrConversion, VkImageUsageFlags usage, bool isProtected);
+            VkDevice device, VkImage image, VmaAllocation imageMemory,
+            VkDeviceMemory externalMemory, VkDeviceMemory stagingMemory, VkBuffer stagingBuffer,
+            Platform::ExternalImageHandle ahBuffer, VkFormat format, VkImageViewType viewType,
+            uint8_t levels, uint8_t layerCount, VkSamplerYcbcrConversion ycbcrConversion,
+            VkImageUsageFlags usage, bool isProtected);
 
     ~VulkanTextureState();
 
@@ -116,7 +117,8 @@ private:
     fvkmemory::resource_ptr<VulkanStream> mStream;
 
     VkImage const mTextureImage;
-    VkDeviceMemory const mTextureImageMemory;
+    VmaAllocation const mTextureImageMemory;
+    VkDeviceMemory const mExternalImageMemory;
     VkFormat const mVkFormat;
     VkImageViewType const mViewType;
     VkImageSubresourceRange const mFullViewRange;
